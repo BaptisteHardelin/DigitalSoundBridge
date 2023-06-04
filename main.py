@@ -38,14 +38,37 @@ def display_audio_devices():
         device_label = tk.Label(window, text=device_info, justify='left')
         device_label.pack(anchor='w')
 
+    output_device_label = tk.Label(window, text="Output Device Index:")
+    output_device_label.pack(anchor='w')
+
+    output_device_entry = tk.Entry(window)
+    output_device_entry.pack(anchor='w')
+
+    send_button = tk.Button(window, text="Envoyer", command=send_output_device)
+    send_button.pack()
+
+    return output_device_entry
+
+def send_output_device():
+    output_device_index = output_device_entry.get()
+
+    if output_device_index:
+        stream_params.output_device_index = int(output_device_index)
+        output_device_message = f"Vous avez sélectionné le périphérique de sortie : {stream_params.output_device_index}"
+        message_label = tk.Label(window, text=output_device_message)
+        message_label.pack()
 
 if __name__ == "__main__":
     stream_params = StreamParams()
     recorder = Recorder(stream_params)
     recorder.start_recording(99999999999)
 
-    display_audio_devices()
+    output_device_entry = display_audio_devices()
+
     window.mainloop()
+
+    if stream_params.output_device_index is not None:
+        print(f"Vous avez sélectionné le périphérique de sortie : {stream_params.output_device_index}")
 
     input("Appuyez sur Entrée pour arrêter l'enregistrement...")
     recorder.stop_recording()

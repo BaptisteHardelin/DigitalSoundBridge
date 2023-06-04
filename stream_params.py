@@ -12,7 +12,7 @@ class StreamParams:
     frames_per_buffer: int = 1024
     input: bool = True
     output: bool = True
-    output_device_index: int = 6
+    output_device_index: int = None
 
     def to_dict(self) -> dict:
         return asdict(self)
